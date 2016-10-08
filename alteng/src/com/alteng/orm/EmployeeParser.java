@@ -141,6 +141,8 @@ public class EmployeeParser {
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		// first argument to program is the input file path
 		// Sample file available in com.alteng.resources package
+		
+		
 		File f = new File(args[0]);
 		FileInputStream fis = new FileInputStream(f);
 		InputStreamReader isr = new InputStreamReader(fis);
@@ -171,3 +173,59 @@ public class EmployeeParser {
 	}
 
 }
+// Input file
+// START 1 Jenson Joseph Kakkattil
+// .....
+// 990
+// 991
+// COMM_RULE
+// 2014 PERCENT 2.7
+// 2014 TARGET 140000 4000
+// START 2 Nibin Babu
+// .....
+// 990
+// 991
+// COMM_RULE
+// 2014 PERCENT 2.7
+// 2014 TARGET 140000 4000
+// START 3 Arun Joy
+// .....
+// 990
+// 991
+// COMM_RULE
+// 2014 PERCENT 2.7
+// 2015 PERCENT 2.7
+// 2014 TARGET 140000 4000
+// 2015 TARGET 180000 8000
+// 2015 TARGET 140000 9000
+//
+//
+// mysql> select * from alteng.employee;
+// +-------------+-------------------------+
+// | id_employee | employee_name |
+// +-------------+-------------------------+
+// | 1 | Jenson Joseph Kakkattil |
+// | 2 | Nibin Babu |
+// | 3 | Arun Joy |
+// +-------------+-------------------------+
+//
+// mysql> select * from alteng.comm_percentage;
+// +-------------+------+---------+
+// | id_employee | year | percent |
+// +-------------+------+---------+
+// | 1 | 2014 | 2.70 |
+// | 2 | 2014 | 2.70 |
+// | 3 | 2014 | 2.70 |
+// | 3 | 2015 | 2.70 |
+// +-------------+------+---------+
+//
+// mysql> select * from alteng.comm_target;
+// +-------------+------+--------+-------+
+// | id_employee | year | target | bonus |
+// +-------------+------+--------+-------+
+// | 1 | 2014 | 140000 | 4000 |
+// | 2 | 2014 | 140000 | 4000 |
+// | 3 | 2014 | 140000 | 4000 |
+// | 3 | 2015 | 140000 | 9000 |
+// +-------------+------+--------+-------+
+ 

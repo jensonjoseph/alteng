@@ -1,0 +1,58 @@
+DELIMITER $$
+CREATE TRIGGER NEW_CONTACT AFTER INSERT ON CONTACTS 
+FOR EACH ROW 
+BEGIN INSERT INTO CONTACT_ACL(CONTACT_ID,USER_ID) VALUES (NEW.CONTACT_ID,NEW.OWNER_ID);
+END;$$
+DELIMITER ;
+
+
+mysql> select * from alteng.users;
++---------+-----------+
+| user_id | user_name |
++---------+-----------+
+|      10 | Jenson    |
+|      11 | Shivaraj  |
+|      12 | Ankit     |
+|      13 | Paul      |
+|      14 | Sam       |
+|      15 | Sunil     |
+|      16 | Mrunal    |
++---------+-----------+
+
+mysql> select * from alteng.contacts;
++------------+----------+----------+
+| contact_id | name     | owner_id |
++------------+----------+----------+
+|        101 | cmm_team |       10 |
+|        102 | cae      |       11 |
+|        103 | tc       |       14 |
+|        104 | ACE      |       14 |
++------------+----------+----------+
+4 rows in set (0.01 sec)
+
+mysql> select * from alteng.contact_acl;
++------------+---------+
+| contact_id | user_id |
++------------+---------+
+|        101 |      10 |
+|        101 |      11 |
+|        102 |      11 |
+|        101 |      12 |
+|        103 |      13 |
+|        103 |      14 |
+|        104 |      14 |
+|        102 |      15 |
+|        102 |      16 |
++------------+---------+
+9 rows in set (0.00 sec)
+
+
+mysql> select user_name from alteng.users inner join alteng.contact_acl on conta
+ct_acl.user_id = users.user_id where contact_id=103;
++-----------+
+| user_name |
++-----------+
+| Paul      |
+| Sam       |
++-----------+
+2 rows in set (0.00 sec)
