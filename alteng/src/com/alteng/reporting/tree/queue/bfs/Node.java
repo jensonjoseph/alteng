@@ -13,7 +13,7 @@ import java.util.Properties;
 import java.util.Queue;
 import java.util.Set;
 
-import com.alteng.orm.ConnectionManager;
+import com.alteng.fileparser.orm.ConnectionManager;
 
 public class Node {
 	private int id;

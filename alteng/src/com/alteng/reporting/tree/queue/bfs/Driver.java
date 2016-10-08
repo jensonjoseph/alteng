@@ -15,7 +15,7 @@ import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
 
-import com.alteng.orm.ConnectionManager;
+import com.alteng.fileparser.orm.ConnectionManager;
 
 public class Driver {
 	Properties prop;
