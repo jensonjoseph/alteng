@@ -1,4 +1,4 @@
-package com.alteng.orm;
+package com.alteng.fileparser.orm;
 
 import java.io.BufferedReader;
 import java.io.File;

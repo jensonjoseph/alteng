@@ -1,4 +1,4 @@
-package com.alteng.orm;
+package com.alteng.fileparser.orm;
 
 public class Target {
 	private int amount;
