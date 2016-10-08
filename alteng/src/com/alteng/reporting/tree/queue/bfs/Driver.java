@@ -80,6 +80,39 @@ public class Driver {
 	}
 
 }
+//mysql> select * from alteng.employee
+//-> ;
+//+-------------+-------------------------+
+//| id_employee | employee_name           |
+//+-------------+-------------------------+
+//|           1 | Jenson Joseph Kakkattil |
+//|           2 | Nibin Babu              |
+//|           3 | Arun Joy                |
+//|           4 | Paul Hogan              |
+//|           5 | Samer Shamon            |
+//|           6 | Mark Hamp               |
+//|           7 | Bob Ford                |
+//|           8 | Girish Sheshadri        |
+//|           9 | Sunil Kumar             |
+//|          10 | Ankit Sharma            |
+//|          11 | Pratik Kolge            |
+//+-------------+-------------------------+
+//
+//mysql> select * from alteng.reporting;
+//+-------------+------------+
+//| employee_id | manager_id |
+//+-------------+------------+
+//|           1 |          4 |
+//|          10 |          4 |
+//|           4 |          5 |
+//|           6 |          5 |
+//|           3 |          6 |
+//|          11 |          6 |
+//|           5 |          7 |
+//|           8 |          7 |
+//|           2 |          8 |
+//|           9 |          8 |
+//+-------------+------------+
 // 7
 // ***Start***
 // Manager (7) : Bob Ford has 2 reportees.
