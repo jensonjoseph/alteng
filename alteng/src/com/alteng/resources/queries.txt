@@ -1,0 +1,8 @@
+-- select user_name from users inner join contact_acl on contact_acl.user_id = users.user_id where contact_id=103 
+
+DELIMITER $$
+CREATE TRIGGER NEW_CONTACT AFTER INSERT ON CONTACTS 
+FOR EACH ROW 
+BEGIN INSERT INTO CONTACT_ACL(CONTACT_ID,USER_ID) VALUES (NEW.CONTACT_ID,NEW.OWNER_ID);
+END;$$
+DELIMITER ;
