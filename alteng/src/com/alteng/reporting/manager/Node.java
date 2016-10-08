@@ -1,4 +1,4 @@
-package com.alteng.reporting;
+package com.alteng.reporting.manager;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
-import com.alteng.orm.ConnectionManager;
+import com.alteng.fileparser.orm.ConnectionManager;
 
 public class Node {
 	private int id;
