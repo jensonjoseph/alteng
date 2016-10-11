@@ -9,66 +9,143 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.Locale;
+import java.util.Map.Entry;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeMap;
 
 public class StudentParser {
 	ArrayList<Student> students = new ArrayList<Student>();
+	DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+	TreeMap<String, Integer> dayCount = new TreeMap<String, Integer>(new CountComparator());
 
-	public void display() {
+	public void displayList() {
 		System.out.println("***");
 		for (Student student : students) {
-			System.out.println("Student name :" + student.getName() + "\t" + "DOB : "
-					+ Day.values()[student.getCal().get(Calendar.DAY_OF_WEEK) - 1] + "|" + student.getCal().getTime());
+			System.out.println(
+					"Student name :" + student.getName() + "\t" + "DOB : " + df.format(student.getCal().getTime())
+							+ "\t|\t" + Day.values()[student.getCal().get(Calendar.DAY_OF_WEEK) - 1]);
 		}
 		System.out.println("***");
+	}
+
+	public void displayDayCount() {
+		for (Student student : students) {
+			if (dayCount.containsKey(Day.values()[student.getCal().get(Calendar.DAY_OF_WEEK) - 1].toString())) {
+				int tmp = dayCount.get(Day.values()[student.getCal().get(Calendar.DAY_OF_WEEK) - 1].toString());
+				tmp++;
+				dayCount.put(Day.values()[student.getCal().get(Calendar.DAY_OF_WEEK) - 1].toString(), tmp);
+			} else {
+				dayCount.put(Day.values()[student.getCal().get(Calendar.DAY_OF_WEEK) - 1].toString(), 1);
+			}
+		}
+
+		Set<Entry<String, Integer>> entries = dayCount.entrySet();
+		System.out.println("*** COUNT ***");
+		for (Entry<String, Integer> entry : entries) {
+
+			System.out.println(entry.getKey() + "\t" + entry.getValue());
+
+		}
+
 	}
 
 	public static void main(String[] args) throws FileNotFoundException, ParseException {
 		File f = new File("C:/Jenson/gitRepository/alteng/alteng/src/summercamp.txt");
 		Scanner scan = new Scanner(f);
-		// Letter Date or Time Component Presentation Examples
-		// G Era designator Text AD
-		// y Year Year 1996; 96
-		// Y Week year Year 2009; 09
-		// M Month in year Month July; Jul; 07
-		// w Week in year Number 27
-		// W Week in month Number 2
-		// D Day in year Number 189
-		// d Day in month Number 10
-		// F Day of week in month Number 2
-		// E Day name in week Text Tuesday; Tue
-		// u Day number of week (1 = Monday, ..., 7 = Sunday) Number 1
-		// a Am/pm marker Text PM
-		// H Hour in day (0-23) Number 0
-		// k Hour in day (1-24) Number 24
-		// K Hour in am/pm (0-11) Number 0
-		// h Hour in am/pm (1-12) Number 12
-		// m Minute in hour Number 30
-		// s Second in minute Number 55
-		// S Millisecond Number 978
-		// z Time zone General time zone Pacific Standard Time; PST; GMT-08:00
-		// Z Time zone RFC 822 time zone -0800
-		// X Time zone ISO 8601 time zone -08; -0800; -08:00
 
 		StudentParser driver = new StudentParser();
 		while (scan.hasNext()) {
 			String line = scan.nextLine();
 			String[] tmp = line.split(",");
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+
 			Calendar cal = Calendar.getInstance();
 
-			cal.setTime(df.parse(tmp[1]));
+			cal.setTime(driver.df.parse(tmp[1]));
 			Student s = new Student(tmp[0], cal);
 			driver.students.add(s);
-			System.out.println(Day.values()[s.getCal().get(Calendar.DAY_OF_WEEK) - 1] + "|" + s.getCal().getTime());
+			// System.out.println(Day.values()[s.getCal().get(Calendar.DAY_OF_WEEK)
+			// - 1].toString() + "|"
+			// + driver.df.format(s.getCal().getTime()) + " " + s.getName());
 
 		}
 		scan.close();
-		driver.display();
-		Collections.sort(driver.students, new StudentComparator());
-		driver.display();
+		System.out.println("Unsorted List");
+		driver.displayList();
+		Collections.sort(driver.students, new Student_SunToSat_Comparator());
+		System.out.println("Sorted List by day of week[Sunday to Saturday]");
+		driver.displayList();
+		Collections.sort(driver.students, new Student_AlphabeticDay_Comparator());
+		System.out.println("Sorted List by day of week[Alphabetic]");
+		driver.displayList();
+		driver.displayDayCount();
 		System.out.println("Done");
 	}
 
 }
+/*
+Input
+John,1988-12-20
+Maria,1988-11-18
+Smith,1987-01-03
+Jibin,1984-08-09
+John,1988-12-20
+Smith,1987-01-03
+Jibin,1984-08-09
+John,1988-12-20
+Maria,1988-11-18
+Smith,1987-01-03
+*/
+
+
+/*Output
+ * Unsorted List
+***
+Student name :John	DOB : 1988-12-20	|	TUESDAY
+Student name :Maria	DOB : 1988-11-18	|	FRIDAY
+Student name :Smith	DOB : 1987-01-03	|	SATURDAY
+Student name :Jibin	DOB : 1984-08-09	|	THURSDAY
+Student name :John	DOB : 1988-12-20	|	TUESDAY
+Student name :Smith	DOB : 1987-01-03	|	SATURDAY
+Student name :Jibin	DOB : 1984-08-09	|	THURSDAY
+Student name :John	DOB : 1988-12-20	|	TUESDAY
+Student name :Maria	DOB : 1988-11-18	|	FRIDAY
+Student name :Smith	DOB : 1987-01-03	|	SATURDAY
+***
+Sorted List by day of week[Sunday to Saturday]
+***
+Student name :John	DOB : 1988-12-20	|	TUESDAY
+Student name :John	DOB : 1988-12-20	|	TUESDAY
+Student name :John	DOB : 1988-12-20	|	TUESDAY
+Student name :Jibin	DOB : 1984-08-09	|	THURSDAY
+Student name :Jibin	DOB : 1984-08-09	|	THURSDAY
+Student name :Maria	DOB : 1988-11-18	|	FRIDAY
+Student name :Maria	DOB : 1988-11-18	|	FRIDAY
+Student name :Smith	DOB : 1987-01-03	|	SATURDAY
+Student name :Smith	DOB : 1987-01-03	|	SATURDAY
+Student name :Smith	DOB : 1987-01-03	|	SATURDAY
+***
+Sorted List by day of week[Alphabetic]
+***
+Student name :Maria	DOB : 1988-11-18	|	FRIDAY
+Student name :Maria	DOB : 1988-11-18	|	FRIDAY
+Student name :Smith	DOB : 1987-01-03	|	SATURDAY
+Student name :Smith	DOB : 1987-01-03	|	SATURDAY
+Student name :Smith	DOB : 1987-01-03	|	SATURDAY
+Student name :Jibin	DOB : 1984-08-09	|	THURSDAY
+Student name :Jibin	DOB : 1984-08-09	|	THURSDAY
+Student name :John	DOB : 1988-12-20	|	TUESDAY
+Student name :John	DOB : 1988-12-20	|	TUESDAY
+Student name :John	DOB : 1988-12-20	|	TUESDAY
+***
+*** COUNT ***
+FRIDAY	2
+SATURDAY	3
+THURSDAY	2
+TUESDAY	3
+Done
+
+ */
+ 
