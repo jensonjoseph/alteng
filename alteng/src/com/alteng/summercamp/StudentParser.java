@@ -20,6 +20,13 @@ public class StudentParser {
 	ArrayList<Student> students = new ArrayList<Student>();
 	DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 	TreeMap<String, Integer> dayCount = new TreeMap<String, Integer>(new CountComparator());
+	TreeMap<String, String> supervisor = new TreeMap<String, String>(new CountComparator());
+
+	public void assignSupervisor() {
+		for (Day day : Day.values()) {
+			supervisor.put(day.toString(), "Mr. " + day.toString());
+		}
+	}
 
 	public void displayList() {
 		System.out.println("***");
@@ -46,7 +53,8 @@ public class StudentParser {
 		System.out.println("*** COUNT ***");
 		for (Entry<String, Integer> entry : entries) {
 
-			System.out.println(entry.getKey() + "\t" + entry.getValue());
+			System.out.println(
+					entry.getKey() + "\t" + entry.getValue() + "\tSupervisor is :" + supervisor.get(entry.getKey()));
 
 		}
 
@@ -57,6 +65,7 @@ public class StudentParser {
 		Scanner scan = new Scanner(f);
 
 		StudentParser driver = new StudentParser();
+		driver.assignSupervisor();
 		while (scan.hasNext()) {
 			String line = scan.nextLine();
 			String[] tmp = line.split(",");
@@ -85,8 +94,9 @@ public class StudentParser {
 	}
 
 }
+
 /*
-Input
+INPUT
 John,1988-12-20
 Maria,1988-11-18
 Smith,1987-01-03
@@ -97,11 +107,10 @@ Jibin,1984-08-09
 John,1988-12-20
 Maria,1988-11-18
 Smith,1987-01-03
-*/
 
+OUTPUT
 
-/*Output
- * Unsorted List
+Unsorted List
 ***
 Student name :John	DOB : 1988-12-20	|	TUESDAY
 Student name :Maria	DOB : 1988-11-18	|	FRIDAY
@@ -141,11 +150,9 @@ Student name :John	DOB : 1988-12-20	|	TUESDAY
 Student name :John	DOB : 1988-12-20	|	TUESDAY
 ***
 *** COUNT ***
-FRIDAY	2
-SATURDAY	3
-THURSDAY	2
-TUESDAY	3
+FRIDAY	2	Supervisor is :Mr. FRIDAY
+SATURDAY	3	Supervisor is :Mr. SATURDAY
+THURSDAY	2	Supervisor is :Mr. THURSDAY
+TUESDAY	3	Supervisor is :Mr. TUESDAY
 Done
-
- */
- 
+*/
